@@ -10,3 +10,5 @@ The easiest method is through an extension/add-on on chrome/firefox:
 - Firefox: install the [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) add-on
 
 Then add the script using the following link: https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
+
+Feedback or issues can be left on the memrise forum thread: https://community.memrise.com/t/userscript-memrise-autocorrect-diacritics-punctuation-case/12169
