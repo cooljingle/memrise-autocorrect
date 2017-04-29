@@ -4,7 +4,7 @@
 // @description    Corrects diacritics, punctuation and case while typing
 // @match          https://www.memrise.com/course/*/garden/*
 // @match          https://www.memrise.com/garden/review/*
-// @version        0.0.2
+// @version        0.0.3
 // @updateURL      https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @downloadURL    https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @grant          none
@@ -110,7 +110,26 @@ $(document).ready(function () {
             .replace(/^\s+(?=[^\s]+)/, ""); //clear starting spaces (e.g. from "... abc")
     };
 
-    $('body').on('input', 'input', function (e) {
+    var isComposing = false;
+    var cachedEvent;
+
+    $('body').on('compositionstart', function() {
+        isComposing = true;
+    });
+
+    $('body').on('compositionend', function() {
+        isComposing = false;
+        processInput(cachedEvent);
+    });
+
+    $('body').on('input', 'input', function(e) {
+        cachedEvent = e;
+        if (!isComposing) {
+            processInput(e);
+        }
+    });
+
+    function processInput (e) {
         var b = MEMRISE.garden.box,
             a = b.thing.columns[b.column_a].val,
             v = b.$input.val(),
@@ -132,5 +151,5 @@ $(document).ready(function () {
             var replacement = a.slice(0, sliceIndex);
             b.$input.val(replacement);
         }
-    });
+    }
 });
