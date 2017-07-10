@@ -4,7 +4,7 @@
 // @description    Corrects diacritics, punctuation and case while typing
 // @match          https://www.memrise.com/course/*/garden/*
 // @match          https://www.memrise.com/garden/review/*
-// @version        0.0.4
+// @version        0.0.5
 // @updateURL      https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @downloadURL    https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @grant          none
@@ -122,7 +122,7 @@ $(document).ready(function () {
         processInput(cachedEvent);
     });
 
-    $('body').on('input', 'input', function(e) {
+    $('body').on('.typing input', 'input', function(e) {
         cachedEvent = e;
         if (!isComposing) {
             processInput(e);
@@ -131,25 +131,29 @@ $(document).ready(function () {
 
     function processInput (e) {
         var b = MEMRISE.garden.box,
-            a = b.thing.columns[b.column_a].val,
+            c = b.thing.columns[b.column_a],
+            p = [c.val].concat(c.possible_answers.typing),
             v = b.$input.val(),
             sliceIndex;
 
-        if (a.indexOf(v) !== 0) {
-            var aNoDiacritics = getNonDiacritics(a).toLowerCase();
-            var aSimple = getNonPunctuation(aNoDiacritics);
-            var vSimple = getNonPunctuation(getNonDiacritics(v)).toLowerCase();
+        for (let a of [c.val].concat(c.possible_answers.typing)) {
+            if (a.indexOf(v) !== 0) {
+                var aNoDiacritics = getNonDiacritics(a).toLowerCase();
+                var aSimple = getNonPunctuation(aNoDiacritics);
+                var vSimple = getNonPunctuation(getNonDiacritics(v)).toLowerCase();
 
-            if (aSimple.indexOf(vSimple) === 0) {
-                sliceIndex = aNoDiacritics.match(new RegExp(`.*?${vSimple.split("").join(".*?")}((${punctuation.source}|\\s)+$){0,1}`))[0].length;
+                if (aSimple.indexOf(vSimple) === 0) {
+                    sliceIndex = aNoDiacritics.match(new RegExp(`.*?${vSimple.split("").join(".*?")}((${punctuation.source}|\\s)+$){0,1}`))[0].length;
+                }
+            } else {
+                sliceIndex = a.match(new RegExp(`${v}((${punctuation.source}|\\s)+$){0,1}`))[0].length;
             }
-        } else {
-            sliceIndex = a.match(new RegExp(`${v}((${punctuation.source}|\\s)+$){0,1}`))[0].length;
-        }
 
-        if (sliceIndex) {
-            var replacement = a.slice(0, sliceIndex);
-            b.$input.val(replacement);
+            if (sliceIndex) {
+                var replacement = a.slice(0, sliceIndex);
+                b.$input.val(replacement);
+                break;
+            }
         }
     }
 });
