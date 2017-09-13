@@ -4,7 +4,7 @@
 // @description    Corrects diacritics, punctuation and case while typing
 // @match          https://www.memrise.com/course/*/garden/*
 // @match          https://www.memrise.com/garden/review/*
-// @version        0.0.5
+// @version        0.0.6
 // @updateURL      https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @downloadURL    https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @grant          none
@@ -131,12 +131,11 @@ $(document).ready(function () {
 
     function processInput (e) {
         var b = MEMRISE.garden.box,
-            c = b.thing.columns[b.column_a],
-            p = [c.val].concat(c.possible_answers.typing),
+            p = b.accepted,
             v = b.$input.val(),
             sliceIndex;
 
-        for (let a of [c.val].concat(c.possible_answers.typing)) {
+        for (let a of p) {
             if (a.indexOf(v) !== 0) {
                 var aNoDiacritics = getNonDiacritics(a).toLowerCase();
                 var aSimple = getNonPunctuation(aNoDiacritics);
