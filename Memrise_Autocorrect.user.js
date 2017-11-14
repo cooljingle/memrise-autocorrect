@@ -4,13 +4,14 @@
 // @description    Corrects diacritics, punctuation and case while typing
 // @match          https://www.memrise.com/course/*/garden/*
 // @match          https://www.memrise.com/garden/review/*
-// @version        0.0.7
+// @version        0.0.8
 // @updateURL      https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @downloadURL    https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @grant          none
 // ==/UserScript==
 
 $(document).ready(function () {
+    console.log("autocorrect script loaded");
     var diacritics = [
         {'base':'A', 'letters':/[\u0041\u24B6\uFF21\u00C0\u00C1\u00C2\u1EA6\u1EA4\u1EAA\u1EA8\u00C3\u0100\u0102\u1EB0\u1EAE\u1EB4\u1EB2\u0226\u01E0\u00C4\u01DE\u1EA2\u00C5\u01FA\u01CD\u0200\u0202\u1EA0\u1EAC\u1EB6\u1E00\u0104\u023A\u2C6F]/g},
         {'base':'AA','letters':/[\uA732]/g},
@@ -97,7 +98,7 @@ $(document).ready(function () {
         {'base':'y','letters':/[\u0079\u24E8\uFF59\u1EF3\u00FD\u0177\u1EF9\u0233\u1E8F\u00FF\u1EF7\u1E99\u1EF5\u01B4\u024F\u1EFF]/g},
         {'base':'z','letters':/[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g}
     ],
-        punctuation = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~¿¡]/g;
+        punctuation = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~¿¡ ]/g;
 
     var getNonDiacritics = function (str) {
         diacritics.forEach(sub => str = str.replace(sub.letters, sub.base));
@@ -132,7 +133,7 @@ $(document).ready(function () {
     function processInput (e) {
         var b = MEMRISE.garden.box,
             p = b.testData.accepted,
-            v = b.$input.val(),
+            v = b.$input.value(),
             sliceIndex;
 
         for (let a of p) {
