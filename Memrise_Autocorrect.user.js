@@ -4,7 +4,7 @@
 // @description    Corrects diacritics, punctuation and case while typing
 // @match          https://www.memrise.com/course/*/garden/*
 // @match          https://www.memrise.com/garden/review/*
-// @version        0.0.8
+// @version        0.0.9
 // @updateURL      https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @downloadURL    https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @grant          none
@@ -151,7 +151,7 @@ $(document).ready(function () {
 
             if (sliceIndex) {
                 var replacement = a.slice(0, sliceIndex);
-                b.$input.val(replacement);
+                b.$input.value(replacement);
                 break;
             }
         }
