@@ -4,7 +4,7 @@
 // @description    Corrects diacritics, punctuation and case while typing
 // @match          https://www.memrise.com/course/*/garden/*
 // @match          https://www.memrise.com/garden/review/*
-// @version        0.0.10
+// @version        0.0.11
 // @updateURL      https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @downloadURL    https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @grant          none
@@ -96,7 +96,8 @@ $(document).ready(function () {
         {'base':'w','letters':/[\u0077\u24E6\uFF57\u1E81\u1E83\u0175\u1E87\u1E85\u1E98\u1E89\u2C73]/g},
         {'base':'x','letters':/[\u0078\u24E7\uFF58\u1E8B\u1E8D]/g},
         {'base':'y','letters':/[\u0079\u24E8\uFF59\u1EF3\u00FD\u0177\u1EF9\u0233\u1E8F\u00FF\u1EF7\u1E99\u1EF5\u01B4\u024F\u1EFF]/g},
-        {'base':'z','letters':/[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g}
+        {'base':'z','letters':/[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g},
+        {'base':'','letters':/[\u0301]/g}
     ],
         punctuation = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~¿¡ ]/g;
 
@@ -135,7 +136,7 @@ $(document).ready(function () {
             p = b.testData.accepted,
             i = b.$input.input || b.$input,
             v = i.val(),
-            sliceIndex;
+            sliceIndex = 0;
 
         for (let a of p) {
             if (a.indexOf(v) !== 0) {
@@ -144,7 +145,15 @@ $(document).ready(function () {
                 var vSimple = getNonPunctuation(getNonDiacritics(v)).toLowerCase();
 
                 if (aSimple.indexOf(vSimple) === 0) {
-                    sliceIndex = aNoDiacritics.match(new RegExp(`.*?${vSimple.split("").join(".*?")}((${punctuation.source}|\\s)+$){0,1}`))[0].length;
+                    var noDiacriticSliceIndex = aNoDiacritics.match(new RegExp(`.*?${vSimple.split("").join(".*?")}((${punctuation.source}|\\s)+$){0,1}`))[0].length;
+                    var counter = 0;
+                    for (let i = 0; i < a.length; i++) {
+                        counter += getNonDiacritics(a[i]).length;
+                        if(counter <= noDiacriticSliceIndex)
+                            sliceIndex++;
+                        else
+                            break;
+                    }
                 }
             } else {
                 sliceIndex = a.match(new RegExp(`${v}((${punctuation.source}|\\s)+$){0,1}`))[0].length;
