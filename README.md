@@ -4,10 +4,7 @@ This userscript provides autocorrect on diacritics, punctuation and case.
 
 ### Installation
 
-The easiest method is through an extension/add-on on chrome/firefox:
-
-- Chrome: install the [Tampermonkey](https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo) extension
-- Firefox: install the [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) add-on
+The easiest method is through the Tampermonkey [chrome extension](https://chrome.google.com/webstore/detail/dhdgffkkebhmkfjojejmpbldmpobfkfo) / [firefox addon](https://addons.mozilla.org/firefox/addon/tampermonkey/).
 
 Then add the script using the following link: https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 
