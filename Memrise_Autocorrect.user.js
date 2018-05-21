@@ -4,7 +4,7 @@
 // @description    Corrects diacritics, punctuation and case while typing
 // @match          https://www.memrise.com/course/*/garden/*
 // @match          https://www.memrise.com/garden/review/*
-// @version        0.0.12
+// @version        0.0.13
 // @updateURL      https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @downloadURL    https://github.com/cooljingle/memrise-autocorrect/raw/master/Memrise_Autocorrect.user.js
 // @grant          none
@@ -99,7 +99,7 @@ $(document).ready(function () {
         {'base':'z','letters':/[\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763]/g},
         {'base':'','letters':/[\u0301]/g}
     ],
-        punctuation = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~¿¡ ]/g;
+        punctuation = XRegExp('[\\p{P}\\p{S}\\p{C}\u064B-\u065B ]+', 'g');
 
     var getNonDiacritics = function (str) {
         diacritics.forEach(sub => str = str.replace(sub.letters, sub.base));
